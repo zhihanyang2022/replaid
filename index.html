@@ -16,7 +16,7 @@
       <meta name="keywords" content="Continuous Diffusion Language Models, RePlaid, Plaid, MDLM, Scaling Laws">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>RePlaid: Continuous Diffusion Scales Competitively with Discrete Diffusion for Language</title>
-      <link rel="icon" type="image/x-icon" href="static/images/ganeshafavicon.ico">
+      <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8C%8D</text></svg>">
       <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
          rel="stylesheet">
       <link rel="stylesheet" href="static/css/bulma.min.css">
@@ -71,13 +71,6 @@
                                  class="external-link button is-normal is-rounded is-dark">
                                  <span class="icon"><i class="ai ai-arxiv"></i></span>
                                  <span>arXiv</span>
-                              </a>
-                           </span>
-                           <span class="link-block">
-                              <a href="https://arxiv.org/pdf/2605.18530" target="_blank"
-                                 class="external-link button is-normal is-rounded is-dark">
-                                 <span class="icon"><i class="fas fa-file-pdf"></i></span>
-                                 <span>PDF</span>
                               </a>
                            </span>
                            <p style="text-align: center; margin-top: 20px; font-size: 22px;">
@@ -163,12 +156,12 @@
                      superior generation quality (GenPPL, MAUVE) versus recent continuous baselines.
                   </li>
                   <li>
-                     Theoretical insight: optimizing the noise schedule to minimize ELBO variance naturally produces
+                     Theoretical insight 1: optimizing the noise schedule to minimize ELBO variance naturally produces
                      <b>linear cross-entropy</b> over time &mdash; eliminating the need for case-specific time
                      reparameterizations.
                   </li>
                   <li>
-                     Empirical insight: <b>learnable embeddings</b> drive the largest likelihood gain. Likelihood-based
+                     Theoretical insight 2: <b>learnable embeddings</b> drive the largest likelihood gain. Likelihood-based
                      training induces structured embedding geometries (low-rank, POS-clustered) that the
                      ELBO-CE-trained baselines fail to learn.
                   </li>
