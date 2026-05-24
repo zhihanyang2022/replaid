@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <meta name="description" content="RePlaid: Continuous Diffusion Scales Competitively with Discrete Diffusion for Language">
+      <meta property="og:title" content="RePlaid"/>
+      <meta property="og:description" content="Continuous Diffusion Scales Competitively with Discrete Diffusion for Language"/>
+      <meta property="og:url" content=""/>
+      <meta property="og:image" content="static/images/fig2_scaling.png" />
+      <meta property="og:image:width" content="1200"/>
+      <meta property="og:image:height" content="630"/>
+      <meta name="twitter:title" content="RePlaid: Continuous Diffusion Scales Competitively with Discrete Diffusion for Language">
+      <meta name="twitter:description" content="The first scaling law for continuous diffusion language models that rivals discrete DLMs.">
+      <meta name="twitter:image" content="static/images/fig2_scaling.png">
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="keywords" content="Continuous Diffusion Language Models, RePlaid, Plaid, MDLM, Scaling Laws">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>RePlaid: Continuous Diffusion Scales Competitively with Discrete Diffusion for Language</title>
+      <link rel="icon" type="image/x-icon" href="static/images/ganeshafavicon.ico">
+      <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+         rel="stylesheet">
+      <link rel="stylesheet" href="static/css/bulma.min.css">
+      <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+      <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+      <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+      <link rel="stylesheet"
+         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+      <link rel="stylesheet" href="static/css/index.css">
+      <style>
+         .author-names-row .author-block { color: hsl(204, 86%, 53%); }
+      </style>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script defer src="static/js/fontawesome.all.min.js"></script>
+      <script src="static/js/bulma-carousel.min.js"></script>
+      <script src="static/js/bulma-slider.min.js"></script>
+      <script src="static/js/index.js"></script>
+      <script type="text/javascript" async
+         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+   </head>
+   <body>
+      <section class="hero">
+         <div class="hero-body">
+            <div class="container is-max-desktop">
+               <div class="columns is-centered">
+                  <div class="column has-text-centered">
+                     <h1 class="title is-1 publication-title">Continuous Diffusion Scales Competitively<br>with Discrete Diffusion for Language</h1>
+                     <div class="is-size-5 publication-authors author-names-row">
+                        <span class="author-block"><a href="https://zhihanyang.com" target="_blank">Zhihan Yang</a><sup>1,2</sup>,</span>
+                        <span class="author-block"><a href="https://alexandreguo2001.github.io/" target="_blank">Wei Guo</a><sup>1,3</sup>,</span>
+                        <span class="author-block"><a href="https://zhangshuibai.github.io/" target="_blank">Shuibai Zhang</a><sup>4</sup>,</span>
+                        <span class="author-block"><a href="https://s-sahoo.com" target="_blank">Subham Sekhar Sahoo</a><sup>5</sup>,</span>
+                        <span class="author-block"><a href="https://yongxin.ae.gatech.edu/" target="_blank">Yongxin Chen</a><sup>1,3</sup>,</span>
+                        <span class="author-block"><a href="http://latentspace.cc" target="_blank">Arash Vahdat</a><sup>1</sup>,</span>
+                        <span class="author-block"><a href="https://mortezamardani.github.io/morteza/" target="_blank">Morteza Mardani</a><sup>*1</sup>,</span>
+                        <span class="author-block"><a href="https://johnthickstun.com" target="_blank">John Thickstun</a><sup>*2</sup></span>
+                     </div>
+                     <div class="is-size-5 publication-authors">
+                        <span class="author-block">
+                           <sup>1</sup>NVIDIA &nbsp;&nbsp;
+                           <sup>2</sup>Cornell &nbsp;&nbsp;
+                           <sup>3</sup>Georgia Tech &nbsp;&nbsp;
+                           <sup>4</sup>UW&ndash;Madison &nbsp;&nbsp;
+                           <sup>5</sup>MBZUAI
+                           <br><sup>*</sup>Equal advising; the senior authors are listed alphabetically.
+                        </span>
+                     </div>
+                     <div class="column has-text-centered">
+                        <div class="publication-links">
+                           <span class="link-block">
+                              <a href="https://arxiv.org/abs/2605.18530" target="_blank"
+                                 class="external-link button is-normal is-rounded is-dark">
+                                 <span class="icon"><i class="ai ai-arxiv"></i></span>
+                                 <span>arXiv</span>
+                              </a>
+                           </span>
+                           <span class="link-block">
+                              <a href="https://arxiv.org/pdf/2605.18530" target="_blank"
+                                 class="external-link button is-normal is-rounded is-dark">
+                                 <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                                 <span>PDF</span>
+                              </a>
+                           </span>
+                           <p style="text-align: center; margin-top: 20px; font-size: 22px;">
+                              <span>The <span style="color: maroon;"><b>first scaling law for continuous diffusion language models</b></span> that rivals discrete DLMs &mdash;
+                              with only a <b>20&times; compute gap</b> to autoregressive models and a new <b>SOTA PPL bound of 22.1</b> on OpenWebText among continuous DLMs.</span>
+                           </p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <!-- Teaser -->
+      <section class="hero teaser">
+         <div class="container is-max-desktop">
+            <div class="hero-body">
+               <div style="text-align: center; margin-bottom:1cm">
+                  <img src="static/images/fig2_scaling.png" alt="Scaling laws for RePlaid" style="width: 100%; height: auto;"/>
+               </div>
+               <h4 class="subtitle has-text-centered">
+                  <u>Left:</u> The compute-optimal loss of <b>RePlaid</b> exhibits power-law scaling, decreasing at a rate
+                  comparable to AR, MDLM, and Duo. RePlaid requires only <b>14&times;</b> the FLOPs to match AR;
+                  Duo needs <b>22&times;</b>; RePlaid consumes <b>20&times;</b> with self-conditioning and <b>27&times;</b> without.
+                  <u>Right:</u> At matched compute, RePlaid (s.c.) consistently outperforms MDLM on OpenWebText
+                  (<span style="color: #46b049; font-weight: bold;">green line</span>) &mdash; using up to
+                  <b>3.4&times; fewer parameters</b> than the AR baseline.
+               </h4>
+            </div>
+         </div>
+      </section>
+
+      <!-- Abstract -->
+      <section class="section hero is-light">
+         <div class="container is-max-desktop">
+            <div class="columns is-centered">
+               <div class="column is-four-fifths">
+                  <h2 class="title is-3">Abstract</h2>
+                  <div class="content has-text-justified">
+                     <p>
+                        While diffusion has drawn considerable recent attention from the language modeling community,
+                        continuous diffusion has appeared less scalable than discrete approaches. To challenge this
+                        belief we revisit Plaid, a likelihood-based continuous diffusion language model (DLM), and
+                        construct <b>RePlaid</b> by aligning the architecture of Plaid with modern discrete DLMs. In this
+                        unified setting, we establish the first scaling law for continuous DLMs that rivals discrete DLMs:
+                        RePlaid exhibits a compute gap of only <b>20&times;</b> compared to autoregressive models,
+                        outperforms Duo while using fewer parameters, and outperforms MDLM in the over-trained regime.
+                        We benchmark RePlaid against recent continuous DLMs: on OpenWebText, RePlaid achieves a new
+                        state-of-the-art <b>PPL bound of 22.1</b> among continuous DLMs and superior generation quality.
+                        These results suggest that continuous diffusion, when trained via likelihood, is a highly
+                        competitive and scalable alternative to discrete DLMs.
+                     </p>
+                     <p>
+                        Moreover, we offer theoretical insights to understand the advantage of likelihood-based training.
+                        We show that optimizing the noise schedule to minimize the ELBO's variance naturally yields linear
+                        cross-entropy (information loss) over time. This evenly distributes denoising difficulty without
+                        any case-specific time reparameterization. In addition, we find that optimizing embeddings via
+                        likelihood creates structured geometries and drives the most significant likelihood gain.
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <!-- Key contributions -->
+      <section class="section">
+         <div class="container is-max-desktop">
+            <div class="content is-medium">
+               <h2 class="title">Key Contributions</h2>
+               <ol>
+                  <li>
+                     <b>RePlaid</b>, a modernized continuous DLM that aligns Plaid with the architectures used by
+                     contemporary discrete DLMs &mdash; enabling a fair, head-to-head comparison.
+                  </li>
+                  <li>
+                     The <b>first scaling law for continuous DLMs</b> that rivals discrete DLMs: RePlaid scales at the
+                     same rate as AR, MDLM, and Duo, with a compute gap of only <b>20&times;</b> to AR.
+                  </li>
+                  <li>
+                     A new <b>state-of-the-art PPL bound of 22.1</b> on OpenWebText among continuous DLMs, alongside
+                     superior generation quality (GenPPL, MAUVE) versus recent continuous baselines.
+                  </li>
+                  <li>
+                     Theoretical insight: optimizing the noise schedule to minimize ELBO variance naturally produces
+                     <b>linear cross-entropy</b> over time &mdash; eliminating the need for case-specific time
+                     reparameterizations.
+                  </li>
+                  <li>
+                     Empirical insight: <b>learnable embeddings</b> drive the largest likelihood gain. Likelihood-based
+                     training induces structured embedding geometries (low-rank, POS-clustered) that the
+                     ELBO-CE-trained baselines fail to learn.
+                  </li>
+               </ol>
+            </div>
+         </div>
+      </section>
+
+      <!-- Background -->
+      <section class="section" id="background">
+         <div class="container is-max-desktop">
+            <div class="content is-medium">
+               <h2 class="title">Background</h2>
+               <p>
+                  Discrete diffusion language models (DLMs) have shown significant promise, increasingly rivaling
+                  the performance and scalability of autoregressive (AR) models across various benchmarks. Continuous
+                  diffusion remains a compelling alternative due to its inherent potential for controllability and
+                  acceleration. Despite this, continuous diffusion has been viewed as less scalable than discrete
+                  diffusion &mdash; in part because prior continuous DLMs (e.g., Plaid) were not architecturally
+                  aligned with modern discrete DLMs, making fair comparisons difficult.
+               </p>
+               <p>
+                  We close this gap. We revisit Plaid and construct <b>RePlaid</b> by lifting modern DLM design
+                  choices (architecture, tokenizer, training pipeline) into the continuous setting, then compare
+                  against MDLM and Duo under matched compute. The result: continuous diffusion is far more competitive
+                  than the literature suggests.
+               </p>
+            </div>
+         </div>
+      </section>
+
+      <!-- IsoFLOP analysis -->
+      <section class="section" id="isoflop">
+         <div class="container is-max-desktop">
+            <div class="content is-medium">
+               <h2 class="title">A Unified Scaling Benchmark</h2>
+               <p>
+                  We train and evaluate on the OpenWebText (OWT) corpus, using a Llama-2 tokenizer and a sequence
+                  length of 256. We run an <b>IsoFLOP</b> sweep across six compute budgets
+                  <span>\(C \in \{6 \times 10^{18}, 1 \times 10^{19}, \ldots, 1 \times 10^{20}\}\)</span> and roughly 20
+                  model sizes per budget. For each target FLOP budget <span>\(C\)</span>, we fit a quadratic in
+                  <span>\(\log N\)</span> to the validation loss to identify the compute-optimal parameter count
+                  <span>\(N_C^\ast\)</span> and the corresponding optimal loss <span>\(\mathcal{L}_C^\ast\)</span>.
+               </p>
+               <div style="text-align: center;">
+                  <img src="static/images/fig1_isoflop.png" alt="IsoFLOP curves for MDLM and RePlaid" style="width: 100%; height: auto;"/>
+               </div>
+               <p style="font-size: 90%; text-align: center;">
+                  <b>IsoFLOP curves.</b> (a) MDLM with low-variance training. (b) RePlaid with self-conditioning.
+                  (c) Examples of over-training at 66M parameters &mdash; RePlaid (s.c.) eventually crosses below MDLM (low var.)
+                  as compute increases.
+               </p>
+            </div>
+         </div>
+      </section>
+
+      <!-- Scaling law -->
+      <section class="section" id="scaling">
+         <div class="container is-max-desktop">
+            <div class="content is-medium">
+               <h2 class="title">Scaling Laws</h2>
+               <p>
+                  Fitting power laws to the compute-optimal points across budgets reveals four findings:
+               </p>
+               <ul>
+                  <li><b>Compute-rate parity.</b> RePlaid scales at the <i>same rate</i> as MDLM, Duo, and AR.</li>
+                  <li><b>Competitive offset.</b> Closing the compute gap to AR requires only <b>20&times;</b> FLOPs for
+                     RePlaid (s.c.) and <b>27&times;</b> without &mdash; comparable to MDLM's <b>14&times;</b> and better
+                     than Duo's <b>22&times;</b>.</li>
+                  <li><b>Strong parameter efficiency.</b> RePlaid reaches the compute-optimal loss of MDLM and Duo with
+                     <b>3.4&times;</b> fewer non-embedding parameters, and approaches MDLM at roughly <b>1.8&times;</b>
+                     fewer parameters than AR.</li>
+                  <li><b>Outperforms MDLM under over-training.</b> When trained for more steps than the compute-optimal
+                     budget, RePlaid (s.c.) achieves a lower loss than MDLM &mdash; matched up to <b>6.0&times;</b> its
+                     optimal compute (see Fig. 1c).</li>
+               </ul>
+            </div>
+         </div>
+      </section>
+
+      <!-- Generation quality -->
+      <section class="section" id="genppl">
+         <div class="container is-max-desktop">
+            <div class="content is-medium">
+               <h2 class="title">Generation Quality</h2>
+               <p>
+                  We compare unconditional generation quality on OWT (sequence length 1024, 1M training steps) using
+                  GenPPL and MAUVE. RePlaid achieves strong sample quality across sampling-step budgets, especially at
+                  high NFE, where it approaches AR-level generative perplexity while remaining competitive on MAUVE.
+               </p>
+               <div style="text-align: center;">
+                  <img src="static/images/fig3_genppl_mauve.png" alt="GenPPL and MAUVE vs sampling steps" style="width: 100%; height: auto;"/>
+               </div>
+               <p style="font-size: 90%; text-align: center;">
+                  <b>GenPPL and MAUVE vs. sampling steps</b> on OWT. RePlaid achieves competitive sample quality across
+                  step budgets and the best GenPPL&ndash;entropy frontier (c).
+               </p>
+            </div>
+         </div>
+      </section>
+
+      <!-- Embeddings -->
+      <section class="section" id="embeddings">
+         <div class="container is-max-desktop">
+            <div class="content is-medium">
+               <h2 class="title">Likelihood Training Shapes Embeddings</h2>
+               <p>
+                  Why does likelihood-based training help? We trace most of the gain to the <b>token embeddings</b>.
+                  Visualizing the learned embedding matrix <span>\(\mathbf{E}\)</span> of RePlaid reveals:
+               </p>
+               <ul>
+                  <li><b>Low-rank structure.</b> RePlaid's embedding matrix is substantially lower-rank than
+                     likelihood-free LangFlow's (rank 768 vs. 7681 by default), and matches MDLM's rank.</li>
+                  <li><b>POS clustering.</b> t-SNE and PCA projections show coherent clusters by part-of-speech and
+                     frequency &mdash; structure that the ELBO-CE-trained baselines fail to recover.</li>
+               </ul>
+               <div style="text-align: center;">
+                  <img src="static/images/fig5_embeddings.png" alt="Embedding geometry of RePlaid" style="width: 100%; height: auto;"/>
+               </div>
+               <p style="font-size: 90%; text-align: center;">
+                  <b>Embedding geometry</b> of RePlaid (s.c.) on OWT. (a) t-SNE colored by most-frequent POS tag.
+                  (b) PCA score plot of <span>\(\mathbf{E}\)</span>. (c) PCA score plot of an ablation that freezes
+                  embeddings &mdash; the structure disappears.
+               </p>
+            </div>
+         </div>
+      </section>
+
+      <!-- Noise schedule -->
+      <section class="section" id="schedule">
+         <div class="container is-max-desktop">
+            <div class="content is-medium">
+               <h2 class="title">Why a Learned Noise Schedule Works</h2>
+               <p>
+                  Likelihood-based training also <i>learns</i> a noise schedule that <b>evenly distributes denoising
+                  difficulty</b> across time, rather than relying on hand-crafted time reparameterizations. We give a
+                  theoretical justification:
+               </p>
+               <p style="text-align: center;">
+                  <i>Minimizing the variance of the ELBO over time yields a schedule under which per-timestep
+                  cross-entropy (information loss) is linear in <span>\(t\)</span>.</i>
+               </p>
+               <p>
+                  Concretely, we prove that for a Bayes-optimal denoiser the constant-per-timestep diffusion-loss
+                  condition is equivalent to a closed-form ODE on the schedule
+                  <span>\(\gamma(t) = \log(\alpha_t / \sigma_t)\)</span>, with a unique solution under a mild endpoint
+                  constraint. Empirically, the schedule learned by RePlaid matches this theoretical prediction, while
+                  schedules that freeze the embeddings or the schedule itself produce highly non-linear per-timestep
+                  losses.
+               </p>
+               <div style="text-align: center;">
+                  <img src="static/images/fig6_per_timestep.png" alt="Per-timestep diffusion loss, CE loss, and decoding error" style="width: 100%; height: auto;"/>
+               </div>
+               <p style="font-size: 90%; text-align: center;">
+                  <b>Per-timestep diffusion loss, CE loss, and decoding error</b> for RePlaid (s.c.) and two ablations
+                  that freeze the noise schedule or freeze embeddings. The learned schedule (orange) closely matches
+                  the theoretical <span>\(\gamma^\ast\)</span> and produces nearly linear CE in <span>\(t\)</span>.
+               </p>
+            </div>
+         </div>
+      </section>
+
+      <!-- BibTeX -->
+      <section class="section" id="BibTeX">
+         <div class="container is-max-desktop content">
+            <h2 class="title">BibTeX</h2>
+            <div style="position: relative;">
+               <button onclick="copyBibTeX()" style="position: absolute; top: 10px; right: 10px; z-index: 1;">
+                  Copy
+               </button>
+<pre><code id="bibtex-code">@misc{yang2026replaid,
+      title={Continuous Diffusion Scales Competitively with Discrete Diffusion for Language},
+      author={Zhihan Yang and Wei Guo and Shuibai Zhang and Subham Sekhar Sahoo and Yongxin Chen and Arash Vahdat and Morteza Mardani and John Thickstun},
+      year={2026},
+      eprint={2605.18530},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2605.18530},
+}</code></pre>
+            </div>
+         </div>
+      </section>
+      <script>
+         function copyBibTeX() {
+            const code = document.getElementById('bibtex-code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+               alert("BibTeX copied to clipboard!");
+            });
+         }
+      </script>
+
+      <footer class="footer">
+         <div class="container">
+            <div class="columns is-centered">
+               <div class="column is-8">
+                  <div class="content">
+                     <p>
+                        This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>,
+                        adapted via the <a href="https://s-sahoo.com/Eso-LMs" target="_blank">Eso-LMs</a> project page, which itself adopted from <a href="https://nerfies.github.io" target="_blank">Nerfies</a>.
+                        You are free to borrow the source of this website &mdash; please link back in the footer. <br>
+                        This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </footer>
+   </body>
+</html>
