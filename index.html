@@ -16,26 +16,55 @@
       <meta name="keywords" content="Continuous Diffusion Language Models, RePlaid, Plaid, MDLM, Scaling Laws">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>RePlaid: Continuous Diffusion Scales Competitively with Discrete Diffusion for Language</title>
-      <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8C%8D</text></svg>">
-      <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-         rel="stylesheet">
+      <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8C%8A</text></svg>">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" onload="this.onload=null;this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"></noscript>
       <link rel="stylesheet" href="static/css/bulma.min.css">
       <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
       <link rel="stylesheet" href="static/css/bulma-slider.min.css">
       <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-      <link rel="stylesheet"
-         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+      <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" onload="this.onload=null;this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"></noscript>
       <link rel="stylesheet" href="static/css/index.css">
       <style>
          .author-names-row .author-block { color: hsl(204, 86%, 53%); }
+
+         /* One knob controls both vertical gaps so they stay equal:
+            (1) author affiliations -> action buttons, and
+            (2) intro paragraph -> teaser figures. */
+         :root { --hero-gap: 2rem; }
+         .links-row { padding-top: var(--hero-gap) !important; padding-bottom: 0 !important; }
+         .links-row .publication-links > p { margin-bottom: 0; }
+         .hero:not(.teaser) .hero-body { padding-bottom: 0; }
+         .hero:not(.teaser) .hero-body .column { padding-bottom: 0; }
+         .teaser .hero-body { padding-top: var(--hero-gap); }
+
+         /* Glowing maroon highlight for the RePlaid name */
+         .replaid-glow {
+            color: maroon;
+            text-shadow: 0 0 6px rgba(128, 0, 0, 0.55), 0 0 12px rgba(128, 0, 0, 0.35);
+         }
       </style>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script defer src="static/js/fontawesome.all.min.js"></script>
-      <script src="static/js/bulma-carousel.min.js"></script>
-      <script src="static/js/bulma-slider.min.js"></script>
-      <script src="static/js/index.js"></script>
+      <script defer src="static/js/bulma-carousel.min.js"></script>
+      <script defer src="static/js/bulma-slider.min.js"></script>
+      <script defer src="static/js/index.js"></script>
       <script type="text/javascript" async
          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <!-- OneTrust Cookies Consent Notice start for nvidia.com -->
+      <!-- TEMPORARILY DISABLED for local development — re-enable before deploying.
+      <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" data-document-language="true" type="text/javascript" charset="UTF-8" data-domain-script="3e2b62ff-7ae7-4ac5-87c8-d5949ecafff5" ></script>
+      <script type="text/javascript">
+         function OptanonWrapper() {
+                 var event = new Event('bannerLoaded');
+                 window.dispatchEvent(event);
+             }
+      </script>
+      <script type="text/javascript" src="https://images.nvidia.com/aem-dam/Solutions/ot-js/ot-custom.js"></script>
+      -->
+      <!-- OneTrust Cookies Consent Notice end for nvidia.com -->
    </head>
    <body>
       <section class="hero">
@@ -64,7 +93,7 @@
                            <br><sup>*</sup>Equal advising; the senior authors are listed alphabetically.
                         </span>
                      </div>
-                     <div class="column has-text-centered">
+                     <div class="column has-text-centered links-row">
                         <div class="publication-links">
                            <span class="link-block">
                               <a href="https://arxiv.org/abs/2605.18530" target="_blank"
@@ -74,7 +103,7 @@
                               </a>
                            </span>
                            <p style="text-align: center; margin-top: 20px; font-size: 22px;">
-                              <span>The <span style="color: maroon;"><b>first scaling law for continuous diffusion language models</b></span> that rivals discrete DLMs &mdash;
+                              <span>We establish the <span style="color: maroon;"><b>first scaling law for continuous diffusion language models</b></span> that rivals discrete DLMs &mdash;
                               with only a <b>20&times; compute gap</b> to autoregressive models and a new <b>SOTA PPL bound of 22.1</b> on OpenWebText among continuous DLMs.</span>
                            </p>
                         </div>
@@ -89,17 +118,29 @@
       <section class="hero teaser">
          <div class="container is-max-desktop">
             <div class="hero-body">
-               <div style="text-align: center; margin-bottom:1cm">
-                  <img src="static/images/fig2_scaling.png" alt="Scaling laws for RePlaid" style="width: 100%; height: auto;"/>
+               <div class="columns is-centered" style="margin-bottom:1cm">
+                  <div class="column" id="fig-likelihood-scaling">
+                     <div style="text-align: center;">
+                        <img src="static/images/likelihood-vs-flops.png" alt="Compute-optimal scaling of RePlaid" style="width: 80%; height: auto;"/>
+                     </div>
+                     <h4 class="subtitle is-6 has-text-justified" style="margin-top: 1rem; line-height: 1.5;">
+                        <b style="display: block; text-align: center; margin-bottom: 0.6rem;">Likelihood scaling law</b> The compute-optimal loss of RePlaid exhibits power-law scaling, decreasing at a rate
+                        comparable to AR, MDLM (SOTA masked diffusion), and Duo (SOTA uniform-state diffusion). MDLM  needs <b>14&times; FLOPs</b> to match AR;
+                        Duo needs <b>22&times;</b>; <b style="color: #1f3a93;">RePlaid consumes 20&times; with self-conditioning (s.c.) and 27&times; without it.</b>
+                     </h4>
+                  </div>
+                  <div class="column" id="fig-parameter-scaling">
+                     <div style="text-align: center;">
+                        <img src="static/images/param-vs-flops.png" alt="RePlaid vs MDLM at matched compute" style="width: 80%; height: auto;"/>
+                     </div>
+                     <h4 class="subtitle is-6 has-text-justified" style="margin-top: 1rem; line-height: 1.5;">
+                        <b style="display: block; text-align: center; margin-bottom: 0.6rem;">Parameter scaling law</b> The compute-optimal RePlaid (s.c.) uses
+                        <b style="color: #1f3a93;">1.8&times; fewer parameters</b> than MDLM and Duo &mdash; while outperforming Duo's loss (see likelihood scaling law on the left) &mdash; and
+                        <b style="color: #1f3a93;">3.4&times; fewer parameters</b> than the AR baseline. For a given model size, MDLM and RePlaid (s.c.)
+                        match loss at the <span style="color: #46b049; font-weight: bold;">green line</span>.
+                     </h4>
+                  </div>
                </div>
-               <h4 class="subtitle has-text-centered">
-                  <u>Left:</u> The compute-optimal loss of <b>RePlaid</b> exhibits power-law scaling, decreasing at a rate
-                  comparable to AR, MDLM, and Duo. RePlaid requires only <b>14&times;</b> the FLOPs to match AR;
-                  Duo needs <b>22&times;</b>; RePlaid consumes <b>20&times;</b> with self-conditioning and <b>27&times;</b> without.
-                  <u>Right:</u> At matched compute, RePlaid (s.c.) consistently outperforms MDLM on OpenWebText
-                  (<span style="color: #46b049; font-weight: bold;">green line</span>) &mdash; using up to
-                  <b>3.4&times; fewer parameters</b> than the AR baseline.
-               </h4>
             </div>
          </div>
       </section>
@@ -109,7 +150,7 @@
          <div class="container is-max-desktop">
             <div class="columns is-centered">
                <div class="column is-four-fifths">
-                  <h2 class="title is-3">Abstract</h2>
+                  <h2 class="title is-3 has-text-centered">Abstract</h2>
                   <div class="content has-text-justified">
                      <p>
                         While diffusion has drawn considerable recent attention from the language modeling community,
@@ -138,39 +179,43 @@
       </section>
 
       <!-- Key contributions -->
-      <section class="section">
+      <section class="section" style="padding-top: 4.5rem;">
          <div class="container is-max-desktop">
             <div class="content is-medium">
                <h2 class="title">Key Contributions</h2>
-               <ol>
+               <p>
+                  We introduce <b class="replaid-glow">RePlaid</b>, a modernized continuous DLM that carefully aligns <a href="https://arxiv.org/abs/2305.18619" target="_blank">Plaid</a> with the
+                  architectures used by contemporary discrete DLMs MDLM and Duo &mdash; enabling a fair, head-to-head comparison.
+               </p>
+               <p><b>Strong empirical performance:</b></p>
+               <ul>
                   <li>
-                     <b>RePlaid</b>, a modernized continuous DLM that aligns Plaid with the architectures used by
-                     contemporary discrete DLMs &mdash; enabling a fair, head-to-head comparison.
-                  </li>
-                  <li>
-                     The <b>first scaling law for continuous DLMs</b> that rivals discrete DLMs: RePlaid scales at the
+                     The <b style="color: maroon;">first scaling law for continuous DLMs</b> on <a href="https://www.cerebras.ai/blog/slimpajama-a-627b-token-cleaned-and-deduplicated-version-of-redpajama" target="_blank">SlimPajama-627B</a> that rivals discrete DLMs: RePlaid scales at the
                      same rate as AR, MDLM, and Duo, with a compute gap of only <b>20&times;</b> to AR.
                   </li>
                   <li>
-                     A new <b>state-of-the-art PPL bound of 22.1</b> on OpenWebText among continuous DLMs, alongside
-                     superior generation quality (GenPPL, MAUVE) versus recent continuous baselines.
+                     A new <b style="color: maroon;">state-of-the-art PPL bound of 22.1</b> on <a href="https://huggingface.co/datasets/Skylion007/openwebtext" target="_blank">OpenWebText</a> among continuous DLMs, alongside
+                     superior generation quality (GenPPL, MAUVE) versus discrete and continuous baselines.
                   </li>
+               </ul>
+               <p><b>New theoretical insights:</b></p>
+               <ol>
                   <li>
-                     Theoretical insight 1: optimizing the noise schedule to minimize ELBO variance naturally produces
-                     <b>linear cross-entropy</b> over time &mdash; eliminating the need for case-specific time
+                     <b style="color: maroon;">Optimizing the noise schedule</b> to minimize ELBO variance naturally produces
+                     <b>linear information loss</b> over time &mdash; eliminating the need for case-specific time
                      reparameterizations.
                   </li>
                   <li>
-                     Theoretical insight 2: <b>learnable embeddings</b> drive the largest likelihood gain. Likelihood-based
-                     training induces structured embedding geometries (low-rank, POS-clustered) that the
-                     ELBO-CE-trained baselines fail to learn.
+                     <b style="color: maroon;">Learning embeddings</b> drive the <b>largest likelihood gain</b>. Likelihood-based
+                     training induces structured embedding geometries that the
+                     CE-trained baselines fail to learn.
                   </li>
                </ol>
             </div>
          </div>
       </section>
 
-      <!-- Background -->
+      <!-- Background
       <section class="section" id="background">
          <div class="container is-max-desktop">
             <div class="content is-medium">
@@ -192,6 +237,54 @@
             </div>
          </div>
       </section>
+      -->
+
+      <!-- Sphere diffusion demo (disabled)
+      <section class="section diffusion-section" id="sphere-diffusion">
+         <div class="container is-max-desktop">
+            <div class="content is-medium">
+               <h2 class="title">Forward Diffusion on the Sphere</h2>
+               <p>
+                  Inspired by the sphere animation style, this visualization applies the
+                  variance-preserving (VP) Gaussian forward process to a point on the sphere.
+                  We sample noisy points from
+                  <span>\(x_t = \sqrt{\bar{\alpha}(t)}x_0 + \sqrt{1-\bar{\alpha}(t)}\,\epsilon\)</span>,
+                  where <span>\(x_0\)</span> is a unit-sphere point and <span>\(\epsilon \sim \mathcal{N}(0, I)\)</span>.
+               </p>
+               <div class="diffusion-canvas-wrap">
+                  <canvas id="diffusion-sphere-canvas" aria-label="Sphere diffusion animation"></canvas>
+               </div>
+               <div class="diffusion-controls" aria-label="Diffusion time control">
+                  <label for="diffusion-t-slider">Diffusion time <b>t</b>:</label>
+                  <input
+                     id="diffusion-t-slider"
+                     type="range"
+                     min="0"
+                     max="1"
+                     step="0.01"
+                     value="0.35"
+                     aria-valuemin="0"
+                     aria-valuemax="1"
+                     aria-valuenow="0.35"
+                  >
+                  <span id="diffusion-t-value">0.35</span>
+               </div>
+               <p class="diffusion-caption">
+                  The yellow marker is <b>\(x_0\)</b> on the sphere; cyan dots are forward-noised samples
+                  at user-controlled time <b>\(t\)</b>.
+               </p>
+            </div>
+         </div>
+      </section>
+      -->
+
+      <!-- ===== Part I: Scaling laws ===== -->
+      <section class="section" id="part-scaling" style="padding-bottom: 0;">
+         <div class="container is-max-desktop">
+            <h2 class="title is-2 has-text-centered">Revisiting Scaling Laws of Continuous DLMs</h2>
+            <hr style="margin-top: 1rem; margin-bottom: 2.5rem;"/>
+         </div>
+      </section>
 
       <!-- IsoFLOP analysis -->
       <section class="section" id="isoflop">
@@ -199,21 +292,33 @@
             <div class="content is-medium">
                <h2 class="title">A Unified Scaling Benchmark</h2>
                <p>
-                  We train and evaluate on the OpenWebText (OWT) corpus, using a Llama-2 tokenizer and a sequence
-                  length of 256. We run an <b>IsoFLOP</b> sweep across six compute budgets
-                  <span>\(C \in \{6 \times 10^{18}, 1 \times 10^{19}, \ldots, 1 \times 10^{20}\}\)</span> and roughly 20
+                  We train and evaluate on the <a href="https://www.cerebras.ai/blog/slimpajama-a-627b-token-cleaned-and-deduplicated-version-of-redpajama" target="_blank">SlimPajama-627B</a> corpus, using a Llama-2 tokenizer and
+                  <span>\(L = 2048\)</span>. We run an <b>IsoFLOP analysis</b> across 5 compute budgets
+                  <span>\(C \in \{6 \times 10^{18}, 1 \times 10^{19}, \ldots, 1 \times 10^{20}\}\)</span> and <span>\(\geq 7\)</span>
                   model sizes per budget. For each target FLOP budget <span>\(C\)</span>, we fit a quadratic in
                   <span>\(\log N\)</span> to the validation loss to identify the compute-optimal parameter count
                   <span>\(N_C^\ast\)</span> and the corresponding optimal loss <span>\(\mathcal{L}_C^\ast\)</span>.
                </p>
-               <div style="text-align: center;">
-                  <img src="static/images/fig1_isoflop.png" alt="IsoFLOP curves for MDLM and RePlaid" style="width: 100%; height: auto;"/>
+               <div class="columns is-centered" style="align-items: flex-start;">
+                  <div class="column">
+                     <img src="static/images/isoflop-mdlm-lowvar.png" alt="IsoFLOP curves for MDLM (low var.)" style="width: 100%; height: auto;"/>
+                     <p style="font-size: 90%; text-align: center;">
+                        <b>(a)</b> MDLM (low var. training).
+                     </p>
+                  </div>
+                  <div class="column">
+                     <img src="static/images/isoflop-replaid-sc.png" alt="IsoFLOP curves for RePlaid (s.c.)" style="width: 100%; height: auto;"/>
+                     <p style="font-size: 90%; text-align: center;">
+                        <b>(b)</b> RePlaid with self-conditioning.
+                     </p>
+                  </div>
+                  <div class="column">
+                     <img src="static/images/isoflop-example.png" alt="IsoFLOP analysis example" style="width: 95%; height: auto; display: block; margin: 0 auto;"/>
+                     <p style="font-size: 90%; text-align: center;">
+                        <b>(c)</b> RePlaid (s.c.) beats MDLM at over-training.
+                     </p>
+                  </div>
                </div>
-               <p style="font-size: 90%; text-align: center;">
-                  <b>IsoFLOP curves.</b> (a) MDLM with low-variance training. (b) RePlaid with self-conditioning.
-                  (c) Examples of over-training at 66M parameters &mdash; RePlaid (s.c.) eventually crosses below MDLM (low var.)
-                  as compute increases.
-               </p>
             </div>
          </div>
       </section>
@@ -227,17 +332,77 @@
                   Fitting power laws to the compute-optimal points across budgets reveals four findings:
                </p>
                <ul>
-                  <li><b>Compute-rate parity.</b> RePlaid scales at the <i>same rate</i> as MDLM, Duo, and AR.</li>
-                  <li><b>Competitive offset.</b> Closing the compute gap to AR requires only <b>20&times;</b> FLOPs for
-                     RePlaid (s.c.) and <b>27&times;</b> without &mdash; comparable to MDLM's <b>14&times;</b> and better
-                     than Duo's <b>22&times;</b>.</li>
-                  <li><b>Strong parameter efficiency.</b> RePlaid reaches the compute-optimal loss of MDLM and Duo with
-                     <b>3.4&times;</b> fewer non-embedding parameters, and approaches MDLM at roughly <b>1.8&times;</b>
-                     fewer parameters than AR.</li>
-                  <li><b>Outperforms MDLM under over-training.</b> When trained for more steps than the compute-optimal
-                     budget, RePlaid (s.c.) achieves a lower loss than MDLM &mdash; matched up to <b>6.0&times;</b> its
-                     optimal compute (see Fig. 1c).</li>
+                  <li><b style="color: maroon;">Compute-rate parity.</b> RePlaid scales at a <i>comparable rate</i> to MDLM, Duo, and AR.</li>
+                  <li><b style="color: maroon;">Competitive offset.</b> Closing the compute gap to AR requires only <b>20&times;</b> FLOPs for
+                     RePlaid (s.c.) and <b>27&times;</b> for RePlaid (no s.c.) &mdash; competitive with MDLM's <b>14&times;</b> and
+                     Duo's <b>22&times;</b>.</li>
+                  <li><b style="color: maroon;">Strong parameter efficiency.</b> The compute-optimal RePlaid (s.c.) uses
+                     <b>1.8&times;</b> fewer parameters than MDLM and Duo &mdash; while outperforming Duo's loss &mdash; and
+                     <b>3.4&times;</b> fewer parameters than AR.</li>
+                  <li><b style="color: maroon;">Beats MDLM at over-training.</b> For a given model size, a RePlaid (s.c.) trained for
+                     <b>3.1&times;</b> its optimal compute matches the loss of an MDLM trained for
+                     <b>6.9&times;</b> its optimal compute.</li>
                </ul>
+               <p>
+                  For visualization, please refer to the <a href="#fig-likelihood-scaling">likelihood</a> and
+                  <a href="#fig-parameter-scaling">parameter</a> scaling laws at the top of this page.
+               </p>
+            </div>
+         </div>
+      </section>
+
+      <!-- ===== Part II: Benchmarking ===== -->
+      <section class="section" id="part-benchmarking" style="padding-bottom: 0;">
+         <div class="container is-max-desktop">
+            <h2 class="title is-2 has-text-centered">Benchmarking for Diffusion Language Models</h2>
+            <hr style="margin-top: 1rem; margin-bottom: 2.5rem;"/>
+         </div>
+      </section>
+
+      <!-- Likelihood evaluation -->
+      <section class="section" id="likelihood">
+         <div class="container is-max-desktop">
+            <div class="content is-medium">
+               <h2 class="title">Likelihood Evaluation</h2>
+               <p>
+                  Beyond the scaling-law study, we benchmark RePlaid at the <b>0.1B (100M) parameter scale</b> &mdash; the
+                  canonical testbed at which the recent wave of continuous DLMs is exclusively evaluated, making it the
+                  natural setting for a head-to-head comparison. Having established that RePlaid scales on par with
+                  discrete DLMs, we compare at this standard scale against the strongest discrete (MDLM, Duo) and
+                  continuous (FLM, LangFlow) baselines along both <b>likelihood</b> and sample quality. Both axes matter: methods like
+                  FLM does not propose likelihood bounds, and prior work has shown that a better likelihood does
+                  not always translate into better sample quality. Every method shares the same transformer architecture
+                  and a comparable optimization setup, trained for 1M steps on <a href="https://huggingface.co/datasets/Skylion007/openwebtext" target="_blank">OpenWebText</a>.
+               </p>
+               <p>
+                  On OWT, RePlaid (s.c.) attains the <b style="color: maroon;">best perplexity bound of 22.1</b> among all
+                  considered DLMs &mdash; improving over the strongest discrete baseline MDLM (low var., <b>23.1</b>), and
+                  outperforming Duo (<b>25.2</b>), the original Plaid (<b>24.4</b>), and the concurrent LangFlow
+                  (<b>32.2</b>). Even without self-conditioning, RePlaid reaches <b>23.6</b> &mdash; already below Duo's
+                  25.2 and far ahead of LangFlow's 38.4. The gap to MDLM shrinks further at 250K steps, consistent with
+                  the over-training crossover seen in the scaling study. 
+               </p>
+               <table class="table is-striped is-hoverable" style="margin: 1.5rem auto;">
+                  <thead>
+                     <tr><th>Model</th><th>Category</th><th style="text-align: center;">OWT PPL (&darr;)</th></tr>
+                  </thead>
+                  <tbody>
+                     <tr><td>LangFlow (no s.c.)</td><td>Continuous diffusion</td><td style="text-align: center;">38.4</td></tr>
+                     <tr><td>LangFlow (s.c.)</td><td>Continuous diffusion</td><td style="text-align: center;">32.2</td></tr>
+                     <tr><td>Plaid (no s.c.)</td><td>Continuous diffusion</td><td style="text-align: center;">25.7</td></tr>
+                     <tr><td>Duo</td><td>Discrete diffusion (uniform)</td><td style="text-align: center;">25.2</td></tr>
+                     <tr><td>Plaid (s.c.)</td><td>Continuous diffusion</td><td style="text-align: center;">24.4</td></tr>
+                     <tr><td><b style="color: maroon;">RePlaid (no s.c.)</b></td><td><b style="color: maroon;">Continuous diffusion</b></td><td style="text-align: center;"><b style="color: maroon;">23.6</b></td></tr>
+                     <tr><td>MDLM</td><td>Discrete diffusion (mask)</td><td style="text-align: center;">23.2</td></tr>
+                     <tr><td>MDLM (low var.)</td><td>Discrete diffusion (mask)</td><td style="text-align: center;">23.1</td></tr>
+                     <tr><td><b style="color: maroon;">RePlaid (s.c.)</b></td><td><b style="color: maroon;">Continuous diffusion</b></td><td style="text-align: center;"><b style="color: maroon;">22.1</b></td></tr>
+                     <tr><td>AR Transformer</td><td>Autoregressive</td><td style="text-align: center;">17.5</td></tr>
+                  </tbody>
+               </table>
+               <p style="font-size: 90%; text-align: center;">
+                  <b>Test perplexity bounds on OWT</b> (L = 1024, 1M steps), computed from the NELBO as in prior work.
+                  RePlaid (s.c.) sets a new state of the art among continuous DLMs and beats all considered discrete baselines.
+               </p>
             </div>
          </div>
       </section>
@@ -248,17 +413,33 @@
             <div class="content is-medium">
                <h2 class="title">Generation Quality</h2>
                <p>
-                  We compare unconditional generation quality on OWT (sequence length 1024, 1M training steps) using
-                  GenPPL and MAUVE. RePlaid achieves strong sample quality across sampling-step budgets, especially at
-                  high NFE, where it approaches AR-level generative perplexity while remaining competitive on MAUVE.
+                  We compare unconditional generation quality on OWT using
+                  GenPPL and MAUVE. 
                </p>
-               <div style="text-align: center;">
-                  <img src="static/images/fig3_genppl_mauve.png" alt="GenPPL and MAUVE vs sampling steps" style="width: 100%; height: auto;"/>
+               <p>
+                  With a <b>vanilla DDPM sampler</b> and a <b>uniform time discretization</b>, RePlaid achieves <b style="color: maroon;">stronger sample quality</b> across sampling-step budgets than all considered discrete and continuous baselines, especially at
+                  high NFEs, where it approaches data-level generative perplexity (but lower entropy) and MAUVE.
+               </p>
+               <div class="columns is-centered" style="align-items: flex-start;">
+                  <div class="column">
+                     <img src="static/images/genppl-t.png" alt="GenPPL vs sampling steps" style="width: 95%; height: auto;"/>
+                     <p style="font-size: 90%; text-align: center;">
+                        <b>(a)</b> GenPPL vs. sampling steps.
+                     </p>
+                  </div>
+                  <div class="column">
+                     <img src="static/images/mauve-t.png" alt="MAUVE vs sampling steps" style="width: 95%; height: auto; display: block; margin: 0 auto;"/>
+                     <p style="font-size: 90%; text-align: center;">
+                        <b>(b)</b> MAUVE vs. sampling steps.
+                     </p>
+                  </div>
+                  <div class="column">
+                     <img src="static/images/genppl-entropy.png" alt="GenPPL vs entropy frontier" style="width: 97%; height: auto;"/>
+                     <p style="font-size: 90%; text-align: center;">
+                        <b>(c)</b> GenPPL&ndash;entropy frontier.
+                     </p>
+                  </div>
                </div>
-               <p style="font-size: 90%; text-align: center;">
-                  <b>GenPPL and MAUVE vs. sampling steps</b> on OWT. RePlaid achieves competitive sample quality across
-                  step budgets and the best GenPPL&ndash;entropy frontier (c).
-               </p>
             </div>
          </div>
       </section>
@@ -267,24 +448,33 @@
       <section class="section" id="embeddings">
          <div class="container is-max-desktop">
             <div class="content is-medium">
-               <h2 class="title">Likelihood Training Shapes Embeddings</h2>
+               <h2 class="title">Likelihood Training Shapes Structured Embeddings</h2>
                <p>
-                  Why does likelihood-based training help? We trace most of the gain to the <b>token embeddings</b>.
-                  Visualizing the learned embedding matrix <span>\(\mathbf{E}\)</span> of RePlaid reveals:
+                  RePlaid is trained with a plain VDM NELBO &mdash; no cross-entropy (CE) term and no hand-engineered
+                  time reparameterization. Why does this work so well? Because the NELBO is a <i>true</i> upper bound on
+                  the negative log-likelihood, optimizing it places strong, well-calibrated pressure on the token
+                  embeddings <span>\(\mathbf{E}\)</span>. Recent embedding-based continuous DLMs (CDCD, FLM, LangFlow)
+                  instead substitute a CE loss; the difference shows up directly in the learned embedding geometry.
                </p>
                <ul>
-                  <li><b>Low-rank structure.</b> RePlaid's embedding matrix is substantially lower-rank than
-                     likelihood-free LangFlow's (rank 768 vs. 7681 by default), and matches MDLM's rank.</li>
-                  <li><b>POS clustering.</b> t-SNE and PCA projections show coherent clusters by part-of-speech and
-                     frequency &mdash; structure that the ELBO-CE-trained baselines fail to recover.</li>
+                  <li>RePlaid yields <b style="color: maroon;">low-rank, linguistically meaningful geometry</b>. At a tiny embedding dimension
+                     <span>\(d_e = 16\)</span>, a t-SNE projection of <span>\(\mathbf{E}\)</span> shows clusters of subwords by
+                     part-of-speech, and a PCA scree plot concentrates <b>90% of the variance in ~6 principal
+                     components</b>.</li>
+                  <li><b>CE acts as a separative force.</b> Adding an auxiliary CE term to the NELBO disperses the
+                     embeddings, flattening the spectrum and degrading the PPL bound from <b>22.1 to 26.1</b>.</li>
+                  <li><b>Holds at scale.</b> At <span>\(d_e = 768\)</span>, RePlaid learns a much lower-rank
+                     geometry than CE-based LangFlow (while attaining a better PPL), whereas MDLM learns a much
+                     higher-rank geometry than both.</li>
                </ul>
                <div style="text-align: center;">
                   <img src="static/images/fig5_embeddings.png" alt="Embedding geometry of RePlaid" style="width: 100%; height: auto;"/>
                </div>
                <p style="font-size: 90%; text-align: center;">
-                  <b>Embedding geometry</b> of RePlaid (s.c.) on OWT. (a) t-SNE colored by most-frequent POS tag.
-                  (b) PCA score plot of <span>\(\mathbf{E}\)</span>. (c) PCA score plot of an ablation that freezes
-                  embeddings &mdash; the structure disappears.
+                  <b>Embedding geometry</b> of RePlaid (s.c.) on OWT (PPL 22.1). (a) t-SNE of <span>\(\mathbf{E}\)</span>,
+                  each subword colored by its most-frequent POS tag. (b) PCA scree plot of <span>\(\mathbf{E}\)</span>
+                  &mdash; low-rank, ~6 components for 90% of the variance. (c) PCA scree plot when an auxiliary CE loss
+                  is added &mdash; the spectrum disperses and the PPL bound worsens to 26.1.
                </p>
             </div>
          </div>
@@ -296,30 +486,21 @@
             <div class="content is-medium">
                <h2 class="title">Why a Learned Noise Schedule Works</h2>
                <p>
-                  Likelihood-based training also <i>learns</i> a noise schedule that <b>evenly distributes denoising
-                  difficulty</b> across time, rather than relying on hand-crafted time reparameterizations. We give a
-                  theoretical justification:
+                  We prove that likelihood-based training <i>learns</i> a noise schedule that <b style="color: maroon;">evenly distributes denoising
+                  difficulty across time</b> without relying on hand-crafted time reparameterizations. More formally:
                </p>
                <p style="text-align: center;">
-                  <i>Minimizing the variance of the ELBO over time yields a schedule under which per-timestep
-                  cross-entropy (information loss) is linear in <span>\(t\)</span>.</i>
+                  <i>Minimizing the variance of the ELBO over time yields a noise schedule under which per-timestep
+                  <b>information loss</b> is linear in <span>\(t\)</span> and the per-timestep <b>cross-entropy</b> is near linear in <span>\(t\)</span>.</i>
                </p>
                <p>
-                  Concretely, we prove that for a Bayes-optimal denoiser the constant-per-timestep diffusion-loss
-                  condition is equivalent to a closed-form ODE on the schedule
-                  <span>\(\gamma(t) = \log(\alpha_t / \sigma_t)\)</span>, with a unique solution under a mild endpoint
-                  constraint. Empirically, the schedule learned by RePlaid matches this theoretical prediction, while
-                  schedules that freeze the embeddings or the schedule itself produce highly non-linear per-timestep
+                  Empirically, the noise schedule learned by RePlaid matches the theoretical prediction, while
+               freezing the noise schedule during training produces highly non-linear per-timestep
                   losses.
                </p>
                <div style="text-align: center;">
                   <img src="static/images/fig6_per_timestep.png" alt="Per-timestep diffusion loss, CE loss, and decoding error" style="width: 100%; height: auto;"/>
                </div>
-               <p style="font-size: 90%; text-align: center;">
-                  <b>Per-timestep diffusion loss, CE loss, and decoding error</b> for RePlaid (s.c.) and two ablations
-                  that freeze the noise schedule or freeze embeddings. The learned schedule (orange) closely matches
-                  the theoretical <span>\(\gamma^\ast\)</span> and produces nearly linear CE in <span>\(t\)</span>.
-               </p>
             </div>
          </div>
       </section>
@@ -358,12 +539,21 @@
             <div class="columns is-centered">
                <div class="column is-8">
                   <div class="content">
-                     <p>
+                     <p class="has-text-centered">
                         This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>,
                         adapted via the <a href="https://s-sahoo.com/Eso-LMs" target="_blank">Eso-LMs</a> project page, which itself adopted from <a href="https://nerfies.github.io" target="_blank">Nerfies</a>.
                         You are free to borrow the source of this website &mdash; please link back in the footer. <br>
                         This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
                      </p>
+                     <div class="has-text-centered">
+                        <a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a> &mdash;
+                        <a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank" rel="noopener">Your Privacy Choices</a> &mdash;
+                        <a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank" rel="noopener">Terms of Service</a> &mdash;
+                        <a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank" rel="noopener">Accessibility</a> &mdash;
+                        <a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank" rel="noopener">Corporate Policies</a> &mdash;
+                        <a href="https://www.nvidia.com/en-us/contact/" target="_blank" rel="noopener">Contact</a>
+                        <br><br>
+                     </div>
                   </div>
                </div>
             </div>
